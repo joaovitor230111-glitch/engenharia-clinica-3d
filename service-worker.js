@@ -1,4 +1,5 @@
-const STATIC_CACHE = 'projeto3-static-v1';
+const STATIC_CACHE = 'projeto3-static-v2';
+
 const LOCAL_STATIC_FILES = [
   './',
   './index.html',
@@ -39,6 +40,15 @@ self.addEventListener('fetch', (event) => {
     url.hostname.endsWith('.googleusercontent.com')
   ) {
     event.respondWith(fetch(request, { cache: 'no-store' }));
+    return;
+  }
+
+  if (
+    request.headers.has('range') ||
+    request.destination === 'video' ||
+    url.pathname.toLowerCase().endsWith('.mp4')
+  ) {
+    event.respondWith(fetch(request));
     return;
   }
 
